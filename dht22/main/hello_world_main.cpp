@@ -55,7 +55,7 @@ extern "C" void app_main(void)
     {
         sensor.read(&result);
 
-        printf("Humidity:%d Temperature:%d ResultCode:%d\n",result.Humidity,result.Temperature,result.ResultCode);
+        printf("Humidity:%.1f Temperature:%.1f ResultCode:%d\n",result.Humidity,result.Temperature,result.ResultCode);
 	    vTaskDelay(5000 / portTICK_PERIOD_MS);        
     }
 

@@ -113,8 +113,8 @@ void readSensor(gpio_num_t pin,struct SensorReadingResult *result)
     irqState.IsError = false;
 
     // Reset result
-    result->Humidity = 0;
-    result->Temperature = 0;
+    result->Humidity = 0.0f;
+    result->Temperature = 0.0f;
     result->ResultCode = Success;
 
     // Enable interuppts
@@ -186,9 +186,11 @@ void readSensor(gpio_num_t pin,struct SensorReadingResult *result)
 	
 	unsigned char calculated = (hhumidity + lhumidity + htemp + ltemp) & 0x0FF;
 	
-	unsigned int humidity = hhumidity<<8 | lhumidity;
-	unsigned int temp = htemp<<8 | ltemp;	
+	uint16_t humidity = hhumidity<<8 | lhumidity;
+	uint16_t temp = htemp<<8 | ltemp;	
 	
+    temp = 0x8000 | temp;
+    
 //	printf("Humidity:%u Temp:%u\n",humidity,temp);				
 //	printf("checksum:%u = %u\n",check,calculated);	
 
@@ -200,9 +202,18 @@ void readSensor(gpio_num_t pin,struct SensorReadingResult *result)
     }
     else
     {
+        if(temp & 0x8000)
+        {
+            temp = temp & 0x7fff;
+            result->Temperature = -temp/10.0f;
+        }
+        else
+        {
+            result->Temperature = temp/10.0f;            
+        }
         result->ResultCode = Success;
-        result->Humidity = humidity;
-        result->Temperature = temp;
+        result->Humidity = humidity/10.0f;
+
     }
 }
 void dht22Task( void * pvParameters )

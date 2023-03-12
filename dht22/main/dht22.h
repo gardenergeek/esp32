@@ -17,8 +17,8 @@ enum SensorReadingResultCode
 
 struct SensorReadingResult
 {
-	int16_t Humidity;
-	int16_t Temperature;
+	float Humidity;
+	float Temperature;
 	enum SensorReadingResultCode ResultCode;
 };
 
