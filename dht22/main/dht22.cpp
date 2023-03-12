@@ -41,7 +41,7 @@ namespace dht22
 
         }
     }
-    
+    bool Dht22Sensor::IsCommonInitialized = false;
     // gpioNum : 0..15
      Dht22Sensor::Dht22Sensor(gpio_num_t gpioNum)
     {
@@ -56,7 +56,12 @@ namespace dht22
     }
     void Dht22Sensor::init()
     {
-        gpio_install_isr_service( ESP_INTR_FLAG_LEVEL3);    
+        if(!Dht22Sensor::IsCommonInitialized)
+        {
+            gpio_install_isr_service( ESP_INTR_FLAG_LEVEL3);    
+            Dht22Sensor::IsCommonInitialized = true;
+        }
+
         gpio_isr_handler_add(this->m_irqState.PinNo, gpio_isr_handler, (void*)&this->m_irqState);
 
         // Reset pin, set as input & enable pullup

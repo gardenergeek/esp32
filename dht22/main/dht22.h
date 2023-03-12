@@ -47,7 +47,8 @@ namespace dht22
 	public:
 		Dht22Sensor(gpio_num_t gpioNum);
 		void read(struct SensorReadingResult *result);
-		
+		static bool IsCommonInitialized;
+				
 	private:
 		void init();
 		unsigned char timesToByte(int *start,int threshold);
@@ -55,6 +56,7 @@ namespace dht22
 	private:
 		struct SensorReadingResult m_result;
 		struct IrqState m_irqState;
+
 	};
 }
 
