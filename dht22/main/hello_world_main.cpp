@@ -48,8 +48,8 @@ static void IRAM_ATTR gpio_isr_handler(void* arg)
 */
 extern "C" void app_main(void)
 {
-    dht22::Dht22Sensor sensor = dht22::Dht22Sensor(4);
-    struct SensorReadingResult result;
+    dht22::Dht22Sensor sensor = dht22::Dht22Sensor((gpio_num_t)4);
+    struct dht22::SensorReadingResult result;
 
     while(true)
     {
